@@ -1,0 +1,16 @@
+diff -ru a/com/badlogic/gdx/backends/openal/OpenALMusic.java b/com/badlogic/gdx/backends/openal/OpenALMusic.java
+--- a/com/badlogic/gdx/backends/openal/OpenALMusic.java
++++ b/com/badlogic/gdx/backends/openal/OpenALMusic.java
+@@ -167,10 +167,11 @@
+ 	}
+ 
+ 	public void dispose () {
++		// Unregister even if already stopped; otherwise stopped tracks pile up in audio.music.
++		audio.music.removeValue(this, true);
+ 		if (buffers == null) return;
+ 		if (sourceID != -1) {
+ 			reset();
+-			audio.music.removeValue(this, true);
+ 			audio.freeSource(sourceID);
+ 			sourceID = -1;
+ 		}

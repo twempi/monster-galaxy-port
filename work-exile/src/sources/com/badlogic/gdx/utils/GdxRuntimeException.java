@@ -1,0 +1,18 @@
+package com.badlogic.gdx.utils;
+
+/* JADX INFO: loaded from: /home/edward/Documents/projects/monster-galaxy/work-exile/apk/classes.dex */
+public class GdxRuntimeException extends RuntimeException {
+    private static final long serialVersionUID = 6735854402467673117L;
+
+    public GdxRuntimeException(String message) {
+        super(message);
+    }
+
+    public GdxRuntimeException(Throwable t) {
+        super(t);
+    }
+
+    public GdxRuntimeException(String message, Throwable t) {
+        super(message, t);
+    }
+}

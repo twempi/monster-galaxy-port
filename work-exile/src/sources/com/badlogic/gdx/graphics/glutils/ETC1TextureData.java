@@ -1,0 +1,110 @@
+package com.badlogic.gdx.graphics.glutils;
+
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+
+/* JADX INFO: loaded from: /home/edward/Documents/projects/monster-galaxy/work-exile/apk/classes.dex */
+public class ETC1TextureData implements TextureData {
+    ETC1.ETC1Data data;
+    FileHandle file;
+    int height;
+    boolean isPrepared;
+    boolean useMipMaps;
+    int width;
+
+    public ETC1TextureData(FileHandle file) {
+        this(file, false);
+    }
+
+    public ETC1TextureData(FileHandle file, boolean useMipMaps) {
+        this.width = 0;
+        this.height = 0;
+        this.isPrepared = false;
+        this.file = file;
+        this.useMipMaps = useMipMaps;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public TextureData.TextureDataType getType() {
+        return TextureData.TextureDataType.Compressed;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public boolean isPrepared() {
+        return this.isPrepared;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public void prepare() {
+        if (this.isPrepared) {
+            throw new GdxRuntimeException("Already prepared");
+        }
+        this.data = new ETC1.ETC1Data(this.file);
+        this.width = this.data.width;
+        this.height = this.data.height;
+        this.isPrepared = true;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public void consumeCompressedData() {
+        if (!this.isPrepared) {
+            throw new GdxRuntimeException("Call prepare() before calling consumeCompressedData()");
+        }
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop || !Gdx.graphics.isGL20Available()) {
+            Pixmap pixmap = ETC1.decodeImage(this.data, Pixmap.Format.RGB565);
+            Gdx.gl.glTexImage2D(3553, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0, pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
+            if (this.useMipMaps) {
+                MipMapGenerator.generateMipMap(pixmap, pixmap.getWidth(), pixmap.getHeight(), false);
+            }
+            pixmap.dispose();
+            this.useMipMaps = false;
+        } else {
+            Gdx.gl.glCompressedTexImage2D(3553, 0, ETC1.ETC1_RGB8_OES, this.width, this.height, 0, this.data.compressedData.capacity() - this.data.dataOffset, this.data.compressedData);
+            if (useMipMaps()) {
+                Gdx.gl20.glGenerateMipmap(3553);
+            }
+        }
+        this.data.dispose();
+        this.data = null;
+        this.isPrepared = false;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public Pixmap consumePixmap() {
+        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public boolean disposePixmap() {
+        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public Pixmap.Format getFormat() {
+        return Pixmap.Format.RGB565;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public boolean useMipMaps() {
+        return this.useMipMaps;
+    }
+
+    @Override // com.badlogic.gdx.graphics.TextureData
+    public boolean isManaged() {
+        return true;
+    }
+}

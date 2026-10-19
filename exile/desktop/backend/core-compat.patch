@@ -1,0 +1,27 @@
+--- a/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java
++++ b/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java
+@@ -182,8 +182,10 @@
+ 						bufferFormat = new BufferFormat(8, 8, 8, 8, 8, 0, 0, false);
+ 					}
+ 				} catch (Exception ex3) {
+-					if (ex3.getMessage().contains("Pixel format not accelerated"))
++					if (ex3.getMessage() != null && ex3.getMessage().contains("Pixel format not accelerated"))
+ 						throw new GdxRuntimeException("OpenGL is not supported by the video driver.", ex3);
++					ex.printStackTrace(); // report why the preferred format failed, not just the last fallback
++					throw new GdxRuntimeException("Couldn't create the OpenGL window", ex3);
+ 				}
+ 			}
+ 		}
+@@ -365,10 +367,8 @@
+ 	}
+ 
+ 	@Override
+-	public void setIcon (Pixmap[] pixmap) {
+-		ByteBuffer[] buffers = new ByteBuffer[pixmap.length];
+-		for(int i = 0; i < buffers.length; i++) buffers[i] = pixmap[i].getPixels().duplicate();
+-		Display.setIcon(buffers);
++	public void setIcon (Pixmap pixmap) { // the game's libGDX core predates the Pixmap[] variant
++		Display.setIcon(new ByteBuffer[] {pixmap.getPixels().duplicate()});
+ 	}
+ 
+ 	@Override

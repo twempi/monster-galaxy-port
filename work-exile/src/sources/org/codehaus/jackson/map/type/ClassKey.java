@@ -1,0 +1,50 @@
+package org.codehaus.jackson.map.type;
+
+/* JADX INFO: loaded from: /home/edward/Documents/projects/monster-galaxy/work-exile/apk/classes.dex */
+public final class ClassKey implements Comparable<ClassKey> {
+    Class<?> _class;
+    String _className;
+    int _hashCode;
+
+    public ClassKey() {
+        this._class = null;
+        this._className = null;
+        this._hashCode = 0;
+    }
+
+    public ClassKey(Class<?> clz) {
+        this._class = clz;
+        this._className = clz.getName();
+        this._hashCode = this._className.hashCode();
+    }
+
+    public void reset(Class<?> clz) {
+        this._class = clz;
+        this._className = clz.getName();
+        this._hashCode = this._className.hashCode();
+    }
+
+    @Override // java.lang.Comparable
+    public int compareTo(ClassKey other) {
+        return this._className.compareTo(other._className);
+    }
+
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o != null && o.getClass() == getClass()) {
+            ClassKey other = (ClassKey) o;
+            return other._class == this._class;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this._hashCode;
+    }
+
+    public String toString() {
+        return this._className;
+    }
+}

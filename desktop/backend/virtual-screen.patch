@@ -1,0 +1,95 @@
+diff -ru a/com/badlogic/gdx/backends/lwjgl/LwjglApplication.java b/com/badlogic/gdx/backends/lwjgl/LwjglApplication.java
+--- a/com/badlogic/gdx/backends/lwjgl/LwjglApplication.java
++++ b/com/badlogic/gdx/backends/lwjgl/LwjglApplication.java
+@@ -121,6 +121,7 @@
+ 		} catch (LWJGLException e) {
+ 			throw new GdxRuntimeException(e);
+ 		}
++		if (graphics.canvas == null) VirtualScreen.init(graphics.config.width, graphics.config.height);
+ 
+ 		listener.create();
+ 		listener.resize(graphics.getWidth(), graphics.getHeight());
+@@ -175,10 +176,13 @@
+ 				if (graphics.resize || Display.wasResized() || Display.getWidth() != graphics.config.width
+ 					|| Display.getHeight() != graphics.config.height) {
+ 					graphics.resize = false;
+-					Gdx.gl.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+ 					graphics.config.width = Display.getWidth();
+ 					graphics.config.height = Display.getHeight();
+-					if (listener != null) listener.resize(Display.getWidth(), Display.getHeight());
++					// With VirtualScreen the game keeps its logical size; only the blit changes.
++					if (!VirtualScreen.active) {
++						Gdx.gl.glViewport(0, 0, Display.getWidth(), Display.getHeight());
++						if (listener != null) listener.resize(Display.getWidth(), Display.getHeight());
++					}
+ 					graphics.requestRendering();
+ 				}
+ 			}
+@@ -187,7 +191,9 @@
+ 			audio.update();
+ 			if (shouldRender) {
+ 				graphics.updateTime();
++				VirtualScreen.begin();
+ 				listener.render();
++				VirtualScreen.end();
+ 				Display.update();
+ 				if (graphics.vsync && graphics.config.useCPUSynch) {
+ 					Display.sync(60);
+diff -ru a/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java b/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java
+--- a/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java
++++ b/com/badlogic/gdx/backends/lwjgl/LwjglGraphics.java
+@@ -93,6 +93,7 @@
+ 	}
+ 
+ 	public int getHeight () {
++		if (VirtualScreen.active) return VirtualScreen.height;
+ 		if (canvas != null)
+ 			return canvas.getHeight();
+ 		else
+@@ -100,6 +101,7 @@
+ 	}
+ 
+ 	public int getWidth () {
++		if (VirtualScreen.active) return VirtualScreen.width;
+ 		if (canvas != null)
+ 			return canvas.getWidth();
+ 		else
+diff -ru a/com/badlogic/gdx/backends/lwjgl/LwjglInput.java b/com/badlogic/gdx/backends/lwjgl/LwjglInput.java
+--- a/com/badlogic/gdx/backends/lwjgl/LwjglInput.java
++++ b/com/badlogic/gdx/backends/lwjgl/LwjglInput.java
+@@ -206,11 +206,11 @@
+ 	}
+ 
+ 	public int getX () {
+-		return Mouse.getX();
++		return VirtualScreen.mouseX(Mouse.getX());
+ 	}
+ 
+ 	public int getY () {
+-		return Gdx.graphics.getHeight() - 1 - Mouse.getY();
++		return VirtualScreen.mouseY(Mouse.getY());
+ 	}
+ 
+ 	public boolean isAccelerometerAvailable () {
+@@ -725,8 +725,8 @@
+ 			int events = 0;
+ 			while (Mouse.next()) {
+ 				events++;
+-				int x = Mouse.getEventX();
+-				int y = Gdx.graphics.getHeight() - Mouse.getEventY() - 1;
++				int x = VirtualScreen.mouseX(Mouse.getEventX());
++				int y = VirtualScreen.mouseY(Mouse.getEventY());
+ 				int button = Mouse.getEventButton();
+ 
+ 				TouchEvent event = usedTouchEvents.obtain();
+@@ -761,8 +761,8 @@
+ 				touchEvents.add(event);
+ 				mouseX = event.x;
+ 				mouseY = event.y;
+-				deltaX = Mouse.getEventDX();
+-				deltaY = Mouse.getEventDY();
++				deltaX = VirtualScreen.mouseDelta(Mouse.getEventDX());
++				deltaY = VirtualScreen.mouseDelta(Mouse.getEventDY());
+ 			}
+ 
+ 			if (events == 0) {

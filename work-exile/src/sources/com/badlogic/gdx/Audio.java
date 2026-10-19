@@ -1,0 +1,18 @@
+package com.badlogic.gdx;
+
+import com.badlogic.gdx.audio.AudioDevice;
+import com.badlogic.gdx.audio.AudioRecorder;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
+
+/* JADX INFO: loaded from: /home/edward/Documents/projects/monster-galaxy/work-exile/apk/classes.dex */
+public interface Audio {
+    AudioDevice newAudioDevice(int i, boolean z);
+
+    AudioRecorder newAudioRecoder(int i, boolean z);
+
+    Music newMusic(FileHandle fileHandle);
+
+    Sound newSound(FileHandle fileHandle);
+}

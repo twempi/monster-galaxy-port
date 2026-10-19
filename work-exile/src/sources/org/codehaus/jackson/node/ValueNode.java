@@ -1,0 +1,44 @@
+package org.codehaus.jackson.node;
+
+import java.io.IOException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.TypeSerializer;
+
+/* JADX INFO: loaded from: /home/edward/Documents/projects/monster-galaxy/work-exile/apk/classes.dex */
+public abstract class ValueNode extends BaseJsonNode {
+    @Override // org.codehaus.jackson.node.BaseJsonNode, org.codehaus.jackson.JsonNode
+    public abstract JsonToken asToken();
+
+    protected ValueNode() {
+    }
+
+    @Override // org.codehaus.jackson.JsonNode
+    public boolean isValueNode() {
+        return true;
+    }
+
+    @Override // org.codehaus.jackson.node.BaseJsonNode, org.codehaus.jackson.map.JsonSerializableWithType
+    public void serializeWithType(JsonGenerator jg, SerializerProvider provider, TypeSerializer typeSer) throws IOException {
+        typeSer.writeTypePrefixForScalar(this, jg);
+        serialize(jg, provider);
+        typeSer.writeTypeSuffixForScalar(this, jg);
+    }
+
+    @Override // org.codehaus.jackson.JsonNode
+    public JsonNode path(String fieldName) {
+        return MissingNode.getInstance();
+    }
+
+    @Override // org.codehaus.jackson.JsonNode
+    public JsonNode path(int index) {
+        return MissingNode.getInstance();
+    }
+
+    @Override // org.codehaus.jackson.JsonNode
+    public String toString() {
+        return getValueAsText();
+    }
+}

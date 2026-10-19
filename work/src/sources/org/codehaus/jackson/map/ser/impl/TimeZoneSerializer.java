@@ -1,0 +1,29 @@
+package org.codehaus.jackson.map.ser.impl;
+
+import java.io.IOException;
+import java.util.TimeZone;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.TypeSerializer;
+import org.codehaus.jackson.map.ser.ScalarSerializerBase;
+
+/* JADX INFO: loaded from: classes.dex */
+public class TimeZoneSerializer extends ScalarSerializerBase<TimeZone> {
+    public static final TimeZoneSerializer instance = new TimeZoneSerializer();
+
+    public TimeZoneSerializer() {
+        super(TimeZone.class);
+    }
+
+    @Override // org.codehaus.jackson.map.ser.SerializerBase, org.codehaus.jackson.map.JsonSerializer
+    public void serialize(TimeZone value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString(value.getID());
+    }
+
+    @Override // org.codehaus.jackson.map.ser.ScalarSerializerBase, org.codehaus.jackson.map.JsonSerializer
+    public void serializeWithType(TimeZone value, JsonGenerator jgen, SerializerProvider provider, TypeSerializer typeSer) throws IOException {
+        typeSer.writeTypePrefixForScalar(value, jgen, TimeZone.class);
+        serialize(value, jgen, provider);
+        typeSer.writeTypeSuffixForScalar(value, jgen);
+    }
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="4"
+    android:versionName="1.0.3"
+    package="com.gaiaonline.mge">
+    <uses-sdk
+        android:minSdkVersion="4"
+        android:targetSdkVersion="9"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.SET_ORIENTATION"/>
+    <supports-screens
+        android:anyDensity="true"
+        android:smallScreens="false"
+        android:normalScreens="true"
+        android:largeScreens="true"/>
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/icon"
+        android:name="com.gaiaonline.monstergalaxy.app.MonsterGalaxyApp"
+        android:debuggable="true">
+        <activity
+            android:label="@string/app_name"
+            android:name="com.gaiaonline.monstergalaxy.app.MonsterGalaxyAndroid"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tapjoy.TJCOffersWebView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.tapjoy.TapjoyFeaturedAppWebView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.tapjoy.TapjoyVideoView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:name="com.tapjoy.TJCVirtualGoods"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name="com.tapjoy.DownloadVirtualGood"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.tapjoy.TJCOffersWebView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.tapjoy.TapjoyFeaturedAppWebView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.tapjoy.TapjoyVideoView"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.jirbo.adcolony.AdColonyOverlay"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:name="com.jirbo.adcolony.AdColonyFullscreen"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:name="com.jirbo.adcolony.AdColonyBrowser"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent"
+            android:name="com.w3i.offerwall.ui.OfferwallActivity"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent"
+            android:name="com.w3i.offerwall.ui.HistoryActivity"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent"
+            android:name="com.w3i.offerwall.ui.OfferDescriptionActivity"/>
+        <activity android:name="com.crittercism.FeedbackActivity"/>
+        <activity android:name="com.crittercism.FeedbackCreateActivity"/>
+        <activity android:name="com.crittercism.FeedbackDetailsActivity"/>
+        <activity android:name="com.crittercism.NotificationActivity"/>
+        <service
+            android:name="com.crittercism.service.CrittercismService"
+            android:exported="true"
+            android:process="com.crittercism.service">
+            <intent-filter>
+                <action android:name="com.crittercism.service.CrittercismService"/>
+            </intent-filter>
+        </service>
+        <service android:name="com.nextive.android.billing.market.BillingService"/>
+        <receiver android:name="com.nextive.android.billing.market.BillingReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
+                <action android:name="com.android.vending.billing.RESPONSE_CODE"/>
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.gaiaonline.monstergalaxy.app.notifications.NotificationBroadcastReceiver"/>
+        <receiver
+            android:name="com.fiksu.asotracking.InstallTracking"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
+            <meta-data
+                android:name="forwardToMdotM"
+                android:value="com.MdotM.MdotmReceiver"/>
+        </receiver>
+    </application>
+</manifest>
