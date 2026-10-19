@@ -30,6 +30,13 @@ dex2jar and the X11/OpenGL/OpenAL libraries. On other distros, install a JDK (8+
   Changing the language restarts the game, as it did on Android.
 - Saves and settings are in `~/.local/share/monster-galaxy/` (the `monsterGalaxy`
   file is your save).
+- **Insert** opens the mod menu (`desktop/src/.../ModMenu.java`): set Moga Cash,
+  Starseeds and Blue Coffee, refill or unlimited energy, always win the "Best"
+  Lucky Moga prize, free Lucky Moga spins, set any Moga's level (1–50), heal and
+  wake all Mogas, and give yourself any Moga. Up/Down select, Left/Right change
+  (Shift ×10, Ctrl ×100), type digits + Enter for an exact number. The mouse works
+  too. Changes are saved right away; the toggles are remembered between launches.
+  While the menu is open the game gets no input. Exile has the same menu.
 - If the game quits right away with "No OpenGL context found" (or an X error
   about `X_GLXCreateNewContext`) after a system update, reboot. The NVIDIA
   driver was updated but the old kernel module is still loaded, which breaks

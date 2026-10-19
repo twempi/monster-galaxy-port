@@ -2,7 +2,6 @@ package com.gaiaonline.monstergalaxy.desktop;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.GdxNativesLoader;
@@ -105,10 +104,9 @@ public class DesktopLauncher {
         return new File(base, "monster-galaxy");
     }
 
-    /** Maps Escape to the Android back button. */
+    /** Adds the mod menu (Insert), which also maps Escape to the Android back button. */
     static final class BackKeyListener implements ApplicationListener {
         private final ApplicationListener game;
-        private boolean backWasDown;
 
         BackKeyListener(ApplicationListener game) {
             this.game = game;
@@ -116,15 +114,12 @@ public class DesktopLauncher {
 
         public void create() {
             game.create();
+            ModMenu.install();
         }
 
         public void render() {
-            boolean backDown = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
-            if (backDown && !backWasDown) {
-                Game.backKeyPressed();
-            }
-            backWasDown = backDown;
             game.render();
+            ModMenu.render();
         }
 
         public void resize(int width, int height) {

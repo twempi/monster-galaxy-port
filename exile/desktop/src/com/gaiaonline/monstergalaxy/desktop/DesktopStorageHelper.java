@@ -573,6 +573,11 @@ public class DesktopStorageHelper implements StorageHelper {
         return intArray;
     }
 
+    /** The slot machine if the game has loaded it yet, else null (used by ModMenu). */
+    public Slotmachine loadedSlotMachine() {
+        return this.slotMachine;
+    }
+
     @Override // com.gaiaonline.monstergalaxy.storage.StorageHelper
     public Slotmachine getSlotMachine() {
         if (this.slotMachine != null) {
